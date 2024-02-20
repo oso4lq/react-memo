@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { Button } from "../../components/Button/Button";
-import { useState } from "react";
+import { useContext } from "react";
+import { ModeContext } from "../../context/ModeContext";
 
 export function SelectLevelPage() {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleEnabled = () => {
-    setIsEnabled(prevState => !prevState);
-  };
+  const { isEnabled, setIsEnabled } = useContext(ModeContext);
 
   return (
     <div className={styles.container}>
@@ -31,7 +29,7 @@ export function SelectLevelPage() {
           </li>
         </ul>
 
-        <Button onClick={toggleEnabled}>Enable easy mode</Button>
+        <Button onClick={() => setIsEnabled(!isEnabled)}>Enable easy mode</Button>
         {isEnabled === true && <div className={styles.active}></div>}
         {isEnabled === false && <div className={styles.inactive}></div>}
       </div>

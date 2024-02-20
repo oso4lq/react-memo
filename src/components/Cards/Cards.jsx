@@ -1,10 +1,11 @@
 import { shuffle } from "lodash";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { generateDeck } from "../../utils/cards";
 import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { ModeContext } from "../../context/ModeContext";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -41,6 +42,7 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const { isEnabled } = useContext(ModeContext);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -73,11 +75,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
-    setAttempts(3);
+    // sets attepmts for new game
+    setAttempts(isEnabled ? 3 : 1);
   }
 
   //  Attempts
-  const maxAttempts = 3;
+  const maxAttempts = isEnabled ? 3 : 1;
   const [attempts, setAttempts] = useState(maxAttempts);
   const handleAttempts = e => {
     console.log("attempt lost");
@@ -122,7 +125,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     //     open: false,
     //   };
     // });
-    
+    //.
 
     setCards(nextCards);
 
@@ -230,7 +233,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         {status === STATUS_IN_PROGRESS ? (
           <div className={styles.bar}>
             {/* ATTEMPTS */}
-            <p className={styles.attempts}>{attempts} / 3</p>
+            <p className={styles.attempts_txt}>attempt: </p>
+            <p className={styles.attempts_counter}>
+              {attempts} / {maxAttempts}
+            </p>
             <Button onClick={resetGame}>Start again</Button>
           </div>
         ) : null}

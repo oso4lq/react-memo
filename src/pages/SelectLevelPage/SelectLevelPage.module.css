@@ -110,3 +110,36 @@
 .levelLink:visited {
   color: #0080c1;
 }
+
+.label {
+  display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    align-items: center;
+    gap: 12px;
+    
+}
+.inputMode:checked + .checkbox::after{
+  content: "\2713";
+  display: flex;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: rgb(179, 1, 60);
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  }
+  
+.checkbox {
+  display: block;
+  height: 40px;
+  width: 40px;
+  background-color: #9fd9e2;
+  border: 1px solid maroon;
+  position: relative;
+
+}
