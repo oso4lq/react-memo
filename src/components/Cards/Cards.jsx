@@ -122,6 +122,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     //     open: false,
     //   };
     // });
+    
 
     setCards(nextCards);
 
