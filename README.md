@@ -1,46 +1,60 @@
-# MVP Карточная игра "Мемо"
+# MVP Card Game "Memo"
 
-В этом репозитории реализован MVP карточкой игры "Мемо" по [тех.заданию](./docs/mvp-spec.md)
+In this repository, an MVP card of the game "Memo" is implemented according to [technical specifications](./docs/mvp-spec.md)
 
-Проект задеплоен на gh pages:
+The project is deployed on gh pages:
 https://skypro-web-developer.github.io/react-memo/
 
-## Разработка
+## Development
 
-Проект реализован на основе шаблона [Create React App](https://github.com/facebook/create-react-app).
+The project is implemented based on the [Create React App](https://github.com/facebook/create-react-app) template.
 
-### Как разрабатывать
+## Estimated time spent
 
-- Установите зависимости командой `npm install`
-- Запустите dev сервер `npm start`
-- Откройте адрес в браузере
+8 hrs
 
-### Стек и инструменты
+## Actual time spent
 
-Для стилей в коде используются css modules.
+8 hrs
 
-Настроены eslint и prettier. Корректность кода проверяется автоматически перед каждым коммитом с помощью lefthook (аналог husky). Закомитить код, который не проходит проверку eslint не получится.
+## New features
 
-### Доступные команды
+Added easy mode. The player can make three mistakes with this mode enabled.
+* start screen button "Enable easy mode",
+* red or green indicator to show if this mode is activated,
+* the counter displays only when easy mode is enabled,
+* if the player picks two cards wrong, all cards flip over.
+
+### How to develop
+
+- Install dependencies with `npm install` command
+- Start the dev server `npm start`
+- Open the address in the browser
+
+### Stack and tools
+
+For styles in the code, css modules are used.
+Configured eslint and prettier. The correctness of the code is checked automatically before each commit using lefthook (analogous to husky). You won't be able to commit code that doesn't pass eslint check.
+
+
+### Available commands
 
 #### `npm start`
 
-Запускает приложение в режиме разработки.
-
-Откройте [http://localhost:3000](http://localhost:3000) чтобы посмотреть его в браузере.
+Launches the application in development mode.
+Open [http://localhost:3000](http://localhost:3000) to view it in a browser.
 
 #### `npm run build`
 
-Собирает оптимизированный и минифицированный продакшен билд приложения в папку `build`.
-После сборке, приложение готово к деплою.
+Collects an optimized and minified production build of the application into the `build` folder.
+After assembly, the application is ready for deployment.
 
 #### `npm run deploy`
 
-Деплоит приложение в github pages. По сути, запускает сборку и коммитит билд в ветку gh-pages.
-
-(!) github pages должен быть включен в настройках репозитория и настроен на ветку gh-pages
+Deploys the application to github pages. Essentially, it starts the build and commits the build to the gh-pages branch.
+(!) github pages must be enabled in the repository settings and configured for the gh-pages branch
 
 #### `npm run lint`
 
-Запускает eslint проверку кода, эта же команда запускается перед каждым коммитом.
-Если не получается закоммитить, попробуйте запустить эту команду и исправить все ошибки и предупреждения.
+Runs eslint code review, the same command is run before each commit.
+If you can't commit, try running this command and fixing any errors or warnings.

@@ -190,10 +190,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         {status === STATUS_IN_PROGRESS ? (
           <div className={styles.bar}>
             {/* ATTEMPTS */}
-            <p className={styles.attempts_txt}>attempt: </p>
-            <p className={styles.attempts_counter}>
-              {attempts} / {maxAttempts}
-            </p>
+            {isEnabled ? <p className={styles.attempts_txt}>attempt: </p> : ""}
+            {isEnabled ? (
+              <p className={styles.attempts_counter}>
+                {attempts} / {maxAttempts}
+              </p>
+            ) : (
+              ""
+            )}
             <Button onClick={resetGame}>Start again</Button>
           </div>
         ) : null}
