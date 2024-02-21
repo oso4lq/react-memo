@@ -7,12 +7,9 @@ import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { ModeContext } from "../../context/ModeContext";
 
-// Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
-// Идет игра: карты закрыты, игрок может их открыть
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
-// Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
 
 function getTimerValue(startDate, endDate) {
@@ -36,24 +33,14 @@ function getTimerValue(startDate, endDate) {
   };
 }
 
-/**
- * Основной компонент игры, внутри него находится вся игровая механика и логика.
- * pairsCount - сколько пар будет в игре
- * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
- */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const { isEnabled } = useContext(ModeContext);
-  // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
-  // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
-  // Дата начала игры
   const [gameStartDate, setGameStartDate] = useState(null);
-  // Дата конца игры
   const [gameEndDate, setGameEndDate] = useState(null);
 
-  // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
     seconds: 0,
     minutes: 0,
@@ -83,28 +70,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const maxAttempts = isEnabled ? 3 : 1;
   const [attempts, setAttempts] = useState(maxAttempts);
   const handleAttempts = e => {
-    console.log("attempt lost");
     e--;
     setAttempts(e);
     if (e <= 0) {
-      console.log("no attempts left");
       finishGame(STATUS_LOST);
     }
   };
 
-  /**
-   * Обработка основного действия в игре - открытие карты.
-   * После открытия карты игра может пепереходит в следующие состояния
-   * - "Игрок выиграл", если на поле открыты все карты
-   * - "Игрок проиграл", если на поле есть две открытые карты без пары
-   * - "Игра продолжается", если не случилось первых двух условий
-   */
   const openCard = clickedCard => {
-    // Если карта уже открыта, то ничего не делаем
     if (clickedCard.open) {
       return;
     }
-    // Игровое поле после открытия кликнутой карты
     const nextCards = cards.map(card => {
       if (card.id !== clickedCard.id) {
         return card;
@@ -115,32 +91,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       };
     });
 
-    // TURN OVER CARD
-    // const turnOverCards = cards.map(card => {
-    //   // if (card.id !== clickedCard.id) {
-    //   //   return card;
-    //   // }
-    //   return {
-    //     ...card,
-    //     open: false,
-    //   };
-    // });
-    //.
-
     setCards(nextCards);
 
     const isPlayerWon = nextCards.every(card => card.open);
 
-    // Победа - все карты на поле открыты
     if (isPlayerWon) {
       finishGame(STATUS_WON);
       return;
     }
 
-    // Открытые карты на игровом поле
     const openCards = nextCards.filter(card => card.open);
 
-    // Ищем открытые карты, у которых нет пары среди других открытых
     const openCardsWithoutPair = openCards.filter(card => {
       const sameCards = openCards.filter(openCard => card.suit === openCard.suit && card.rank === openCard.rank);
 
@@ -151,34 +112,31 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       return false;
     });
 
-    // LOSE ATTEMPT IF PICKED WITHOUT PAIR
+    // lose attempt if picked without pair
     const pickedWrong = openCardsWithoutPair.length >= 2;
     if (pickedWrong) {
       handleAttempts(attempts);
-      // AND TURN OVER THE CARDS
-      // turnOverCards.every( => .open);
+      // and flip over the cards if the easy mode is enabled
+      if (isEnabled) {
+        setTimeout(() => {
+          const resetCards = nextCards.map(card => ({
+            ...card,
+            open: false,
+          }));
+          setCards(resetCards);
+        }, 1000);
+      }
       return;
     }
-
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    // if (playerLost) {
-    //   finishGame(STATUS_LOST);
-    //   return;
-    // }
-
-    // ... игра продолжается
   };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
-  // Игровой цикл
   useEffect(() => {
-    // В статусах кроме превью доп логики не требуется
     if (status !== STATUS_PREVIEW) {
       return;
     }
 
-    // В статусе превью мы
     if (pairsCount > 36) {
       alert("Impossible to make this amount of pairs");
       return;
@@ -197,7 +155,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     };
   }, [status, pairsCount, previewSeconds]);
 
-  // Обновляем значение таймера в интервале
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTimer(getTimerValue(gameStartDate, gameEndDate));
