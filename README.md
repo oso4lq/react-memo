@@ -20,10 +20,11 @@ The project is implemented based on the [Create React App](https://github.com/fa
 ## New features
 
 Added easy mode. The player can make three mistakes with this mode enabled.
-* start screen button "Enable easy mode",
-* red or green indicator to show if this mode is activated,
-* the counter displays only when easy mode is enabled,
-* if the player picks two cards wrong, all cards flip over.
+
+- start screen button "Enable easy mode",
+- red or green indicator to show if this mode is activated,
+- the counter displays only when easy mode is enabled,
+- if the player picks two cards wrong, all cards flip over.
 
 ### How to develop
 
@@ -35,7 +36,6 @@ Added easy mode. The player can make three mistakes with this mode enabled.
 
 For styles in the code, css modules are used.
 Configured eslint and prettier. The correctness of the code is checked automatically before each commit using lefthook (analogous to husky). You won't be able to commit code that doesn't pass eslint check.
-
 
 ### Available commands
 
