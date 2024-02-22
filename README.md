@@ -11,20 +11,24 @@ The project is implemented based on the [Create React App](https://github.com/fa
 
 ## Estimated time spent
 
-8 hrs
+8 hrs + 8 hrs
 
 ## Actual time spent
 
-8 hrs
+8 hrs + 7 hrs
 
 ## New features
 
-Added easy mode. The player can make three mistakes with this mode enabled.
-
+1. Added easy mode. The player can make three mistakes with this mode enabled.
 - start screen button "Enable easy mode",
 - red or green indicator to show if this mode is activated,
 - the counter displays only when easy mode is enabled,
 - if the player picks two cards wrong, all cards flip over.
+
+2. Added leaderboard. This page displays best results of all players.
+- added link from main page and endgame pop-up,
+- leaderboard interacts with API with two functions getScores and addScore,
+- if user wins, he can send his score to API.
 
 ### How to develop
 
