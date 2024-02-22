@@ -1,17 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { Button } from "../../components/Button/Button";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ModeContext } from "../../context/ModeContext";
 import { ButtonMode } from "../../components/Button/ButtonMode";
 
 export function SelectLevelPage() {
   const { isEnabled, setIsEnabled } = useContext(ModeContext);
 
+  useEffect(() => {
+    const savedEasyMode = localStorage.getItem("easyMode");
+    if (savedEasyMode !== null) {
+      setIsEnabled(savedEasyMode === "true");
+    }
+  }, [setIsEnabled]);
+
   const [difficulty, setDifficulty] = useState("3");
 
   const navigate = useNavigate();
   const gameStart = () => {
+    localStorage.setItem("easyMode", isEnabled.toString());
     navigate(`/game/${difficulty}`);
   };
 
