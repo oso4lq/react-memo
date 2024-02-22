@@ -7,6 +7,8 @@ import { ButtonMode } from "../../components/Button/ButtonMode";
 
 export function SelectLevelPage() {
   const { isEnabled, setIsEnabled } = useContext(ModeContext);
+  const [difficulty, setDifficulty] = useState("3");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedEasyMode = localStorage.getItem("easyMode");
@@ -15,9 +17,6 @@ export function SelectLevelPage() {
     }
   }, [setIsEnabled]);
 
-  const [difficulty, setDifficulty] = useState("3");
-
-  const navigate = useNavigate();
   const gameStart = () => {
     localStorage.setItem("easyMode", isEnabled.toString());
     navigate(`/game/${difficulty}`);

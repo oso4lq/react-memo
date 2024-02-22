@@ -16,6 +16,8 @@ export function EndGameModal({ isLeader, isWon, gameDurationSeconds, gameDuratio
   const handleScore = () => {
     if (username.trim() === "") {
       alert("Please enter your name.");
+      console.log("username not set. using default value: 'user'");
+      setUsername("user");
       return;
     }
     const totalTimeInSeconds = gameDurationMinutes * 60 + gameDurationSeconds;
