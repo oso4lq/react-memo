@@ -4,9 +4,10 @@ import { Button } from "../Button/Button";
 
 import deadImageUrl from "./images/dead.png";
 import celebrationImageUrl from "./images/celebration.png";
+import { Link } from "react-router-dom";
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
-  const title = isWon ? "Вы победили!" : "Вы проиграли!";
+  const title = isWon ? "You won!" : "You lose!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
@@ -16,12 +17,15 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
       <h2 className={styles.title}>{title}</h2>
-      <p className={styles.description}>Затраченное время:</p>
+      <p className={styles.description}>Time spent:</p>
       <div className={styles.time}>
         {gameDurationMinutes.toString().padStart("2", "0")}.{gameDurationSeconds.toString().padStart("2", "0")}
       </div>
 
-      <Button onClick={onClick}>Начать сначала</Button>
+      <Button onClick={onClick}>Play again</Button>
+      <Link to="/">
+        <Button>Return to main page</Button>
+      </Link>
     </div>
   );
 }
