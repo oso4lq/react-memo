@@ -25,7 +25,8 @@ export function LeaderboardPage() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.headerTTL}>Leaderboard</h1>
+        <h1 className={styles.headerh1}>Leaderboard</h1>
+        <h4 className={styles.headerh4}>Best scores on difficulty 3</h4>
         <Link to="/">
           <Button>Play</Button>
         </Link>

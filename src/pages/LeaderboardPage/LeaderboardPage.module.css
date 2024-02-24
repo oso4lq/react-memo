@@ -14,10 +14,14 @@
   gap: 20px;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
   margin-bottom: 16px;
 }
-.headerTTL {
+.headerh1 {
+  font-family: StratosSkyeng;
+  color: #ffffff;
+}
+.headerh4 {
   font-family: StratosSkyeng;
   color: #ffffff;
 }
