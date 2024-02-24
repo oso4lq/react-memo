@@ -24,9 +24,9 @@ function getTimerValue(startDate, endDate) {
     endDate = new Date();
   }
 
-  const diffInSecconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
-  const minutes = Math.floor(diffInSecconds / 60);
-  const seconds = diffInSecconds % 60;
+  const diffInSeconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
+  const minutes = Math.floor(diffInSeconds / 60);
+  const seconds = diffInSeconds % 60;
   return {
     minutes,
     seconds,
@@ -37,19 +37,20 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const { isEnabled } = useContext(ModeContext);
   const [cards, setCards] = useState([]);
   const [status, setStatus] = useState(STATUS_PREVIEW);
-
   const [gameStartDate, setGameStartDate] = useState(null);
   const [gameEndDate, setGameEndDate] = useState(null);
-
   const [timer, setTimer] = useState({
     seconds: 0,
     minutes: 0,
   });
+  const maxAttempts = isEnabled ? 3 : 1;
+  const [attempts, setAttempts] = useState(maxAttempts);
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
   }
+
   function startGame() {
     const startDate = new Date();
     setGameEndDate(null);
@@ -57,76 +58,84 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
   }
+
   function resetGame() {
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
-    // sets attepmts for new game
     setAttempts(isEnabled ? 3 : 1);
   }
 
-  //  Attempts
-  const maxAttempts = isEnabled ? 3 : 1;
-  const [attempts, setAttempts] = useState(maxAttempts);
-  const handleAttempts = e => {
-    e--;
-    setAttempts(e);
-    if (e <= 0) {
+  const handleAttempts = () => {
+    const updatedAttempts = attempts - 1;
+    setAttempts(updatedAttempts);
+    if (updatedAttempts <= 0) {
       finishGame(STATUS_LOST);
     }
   };
 
   const openCard = clickedCard => {
-    if (clickedCard.open) {
+    if (clickedCard.open || status !== STATUS_IN_PROGRESS) {
       return;
     }
-    const nextCards = cards.map(card => {
-      if (card.id !== clickedCard.id) {
-        return card;
-      }
-      return {
-        ...card,
-        open: true,
-      };
-    });
 
+    const openCards = cards.filter(card => card.open && !card.guessed);
+
+    if (openCards.length >= 2) {
+      return;
+    }
+
+    const nextCards = cards.map(card => {
+      if (card.id === clickedCard.id || card.guessed) {
+        return {
+          ...card,
+          open: true,
+        };
+      }
+      return card;
+    });
     setCards(nextCards);
 
-    const isPlayerWon = nextCards.every(card => card.open);
+    const openPairs = nextCards.filter(card => card.open && !card.guessed);
+    const guessedPairs = openPairs.filter(card =>
+      openPairs.some(openCard => card.id !== openCard.id && card.suit === openCard.suit && card.rank === openCard.rank),
+    );
 
-    if (isPlayerWon) {
-      finishGame(STATUS_WON);
-      return;
-    }
-
-    const openCards = nextCards.filter(card => card.open);
-
-    const openCardsWithoutPair = openCards.filter(card => {
-      const sameCards = openCards.filter(openCard => card.suit === openCard.suit && card.rank === openCard.rank);
-
-      if (sameCards.length < 2) {
-        return true;
-      }
-
-      return false;
-    });
-
-    // lose attempt if picked without pair
-    const pickedWrong = openCardsWithoutPair.length >= 2;
-    if (pickedWrong) {
-      handleAttempts(attempts);
-      // and flip over the cards if the easy mode is enabled
-      if (isEnabled) {
-        setTimeout(() => {
-          const resetCards = nextCards.map(card => ({
+    if (guessedPairs.length === 2) {
+      const updatedCards = nextCards.map(card => {
+        if (guessedPairs.some(guessedCard => card.id === guessedCard.id)) {
+          return {
             ...card,
-            open: false,
-          }));
-          setCards(resetCards);
-        }, 1000);
+            guessed: true,
+          };
+        }
+        return card;
+      });
+
+      setCards(updatedCards);
+
+      const isPlayerWon = updatedCards.every(card => card.guessed);
+
+      if (isPlayerWon) {
+        finishGame(STATUS_WON);
       }
-      return;
+    } else if (openPairs.length === 2) {
+      handleAttempts();
+
+      setTimeout(() => {
+        const resetCards = nextCards.map(card => {
+          if (!card.guessed) {
+            return {
+              ...card,
+              open: false,
+            };
+          }
+          return card;
+        });
+
+        setCards(resetCards);
+      }, 1000);
     }
   };
 
@@ -189,7 +198,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         </div>
         {status === STATUS_IN_PROGRESS ? (
           <div className={styles.bar}>
-            {/* ATTEMPTS */}
             {isEnabled ? <p className={styles.attempts_txt}>attempt: </p> : ""}
             {isEnabled ? (
               <p className={styles.attempts_counter}>

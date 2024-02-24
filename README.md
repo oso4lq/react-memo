@@ -11,19 +11,30 @@ The project is implemented based on the [Create React App](https://github.com/fa
 
 ## Estimated time spent
 
-8 hrs
+8 hrs + 8 hrs
 
 ## Actual time spent
 
-8 hrs
+8 hrs + 14 hrs
 
 ## New features
 
-Added easy mode. The player can make three mistakes with this mode enabled.
-* start screen button "Enable easy mode",
-* red or green indicator to show if this mode is activated,
-* the counter displays only when easy mode is enabled,
-* if the player picks two cards wrong, all cards flip over.
+1. Added easy mode. The player can make three mistakes with this mode enabled.
+
+- start screen button "Enable easy mode",
+- red or green indicator to show if this mode is activated,
+- the counter displays only when easy mode is enabled,
+
+2. Added leaderboard. This page displays best results of all players.
+
+- added link from main page and endgame pop-up,
+- leaderboard interacts with API with two functions getScores and addScore,
+- if user wins, he can send his score to API,
+- player sees score interactions only on 3d difficulty.
+
+3. Various fixes.
+- Player can't pick more than 2 cards at once,
+- If player picks two non-matching cards, only non-matching cards flip over, and one attempt removes. Matching cards remain open.
 
 ### How to develop
 
@@ -35,7 +46,6 @@ Added easy mode. The player can make three mistakes with this mode enabled.
 
 For styles in the code, css modules are used.
 Configured eslint and prettier. The correctness of the code is checked automatically before each commit using lefthook (analogous to husky). You won't be able to commit code that doesn't pass eslint check.
-
 
 ### Available commands
 
