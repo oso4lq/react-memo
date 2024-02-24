@@ -6,9 +6,7 @@ import { ModeContext } from "../../context/ModeContext";
 import { ButtonMode } from "../../components/Button/ButtonMode";
 
 export function SelectLevelPage() {
-  // easy mode
   const { isEnabled, setIsEnabled } = useContext(ModeContext);
-  // difficulty
   const [difficulty, setDifficulty] = useState("3");
 
   const navigate = useNavigate();
@@ -61,10 +59,6 @@ export function SelectLevelPage() {
               <button
                 type="button"
                 id={e.id}
-                // className={`${difficulty === e.id ? styles._selected_difficulty : ""} ${styles.levelLink}`}
-                // onClick={() => {
-                //   setDifficulty(e.pairs);
-                // }}
                 className={`${difficulty === e.pairs ? styles._selected_difficulty : ""} ${styles.levelLink}`}
                 onClick={() => setDifficultyAndSave(e.pairs)}
               >

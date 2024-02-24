@@ -6,7 +6,6 @@ import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { ModeContext } from "../../context/ModeContext";
-// import { LeaderContext } from "../../context/LeaderContext";
 
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
@@ -36,7 +35,6 @@ function getTimerValue(startDate, endDate) {
 
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const { isEnabled } = useContext(ModeContext);
-  // const { isLeader } = useContext(LeaderContext);
   const [cards, setCards] = useState([]);
   const [status, setStatus] = useState(STATUS_PREVIEW);
   const [gameStartDate, setGameStartDate] = useState(null);
@@ -228,7 +226,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       {isGameEnded ? (
         <div className={styles.modalContainer}>
           <EndGameModal
-            // isLeader={isLeader}
             isWon={status === STATUS_WON}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
