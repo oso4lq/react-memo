@@ -35,7 +35,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       });
   };
 
-  const title = isWon ? (currentDifficulty === "9" ? "You're on the leaderboard!" : "You won!") : "You lose!";
+  const title = isWon ? (currentDifficulty === "9" ? "You are on the leaderboard!" : "You won!") : "You lose!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
@@ -44,7 +44,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   return (
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
-      <h2 className={styles.title}>{title}</h2>
+      <div className={styles.title}>{title}</div>
       {isWon && currentDifficulty === "9" && (
         <input
           className={styles.input_user}
