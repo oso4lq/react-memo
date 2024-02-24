@@ -24,7 +24,6 @@ export function SelectLevelPage() {
 
   const setDifficultyAndSave = pairs => {
     setDifficulty(pairs);
-    console.log(pairs);
     localStorage.setItem("currentDifficulty", pairs.toString());
   };
 
