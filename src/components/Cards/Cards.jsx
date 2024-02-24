@@ -33,10 +33,12 @@ function getTimerValue(startDate, endDate) {
   };
 }
 
-export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+export function Cards({ pairsCount = 3, previewSeconds = 5 }, isLeader) {
   const { isEnabled } = useContext(ModeContext);
   const [cards, setCards] = useState([]);
   const [status, setStatus] = useState(STATUS_PREVIEW);
+
+  // const [isLeader, setIsLeader] = useState(false);
 
   const [gameStartDate, setGameStartDate] = useState(null);
   const [gameEndDate, setGameEndDate] = useState(null);
@@ -77,10 +79,26 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     }
   };
 
+  // const [cardsCounter, setCardsCounter] = useState(2);
+  // const handleCardsCounter = e => {
+  //   console.log("added 2");
+  //   e = e + 2;
+  //   setCardsCounter(e);
+  // };
+
   const openCard = clickedCard => {
-    if (clickedCard.open) {
+    if (clickedCard.open || status !== STATUS_IN_PROGRESS) {
       return;
     }
+    //
+    // const openedCards = cards.filter(card => card.open);
+    // const cardsCounter = openedCards.length / 2 + 1;
+    // console.log("length" + openedCards.length);
+    // console.log("counter" + cardsCounter);
+    // console.log(cardsCounter * 2 - 1);
+    //
+    // if (openedCards.length <= cardsCounter * 2 - 1) {
+    //
     const nextCards = cards.map(card => {
       if (card.id !== clickedCard.id) {
         return card;
@@ -90,7 +108,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         open: true,
       };
     });
-
     setCards(nextCards);
 
     const isPlayerWon = nextCards.every(card => card.open);
@@ -99,8 +116,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       finishGame(STATUS_WON);
       return;
     }
-
+    //
+    // }
+    //
     const openCards = nextCards.filter(card => card.open);
+    // const openCards = cards.filter(card => card.open);
 
     const openCardsWithoutPair = openCards.filter(card => {
       const sameCards = openCards.filter(openCard => card.suit === openCard.suit && card.rank === openCard.rank);
@@ -117,16 +137,20 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     if (pickedWrong) {
       handleAttempts(attempts);
       // and flip over the cards if the easy mode is enabled
-      if (isEnabled) {
-        setTimeout(() => {
-          const resetCards = nextCards.map(card => ({
+      const resetCards = nextCards.map(card => {
+        // const resetCards = cards.map(card => {
+        // flip over only the wrong-picked cards
+        if (openCardsWithoutPair.some(openCard => openCard.id === card.id)) {
+          return {
             ...card,
             open: false,
-          }));
-          setCards(resetCards);
-        }, 1000);
-      }
-      return;
+          };
+        }
+        return card;
+      });
+      setTimeout(() => {
+        setCards(resetCards);
+      }, 1000);
     }
   };
 
@@ -218,6 +242,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       {isGameEnded ? (
         <div className={styles.modalContainer}>
           <EndGameModal
+            isLeader={isLeader} // Pass isLeader prop
             isWon={status === STATUS_WON}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}

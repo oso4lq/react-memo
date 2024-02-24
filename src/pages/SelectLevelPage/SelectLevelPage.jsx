@@ -8,6 +8,9 @@ import { ButtonMode } from "../../components/Button/ButtonMode";
 export function SelectLevelPage() {
   const { isEnabled, setIsEnabled } = useContext(ModeContext);
   const [difficulty, setDifficulty] = useState("3");
+  // sends props for leaderboard
+  // const [isLeader, setIsLeader] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +22,9 @@ export function SelectLevelPage() {
 
   const gameStart = () => {
     localStorage.setItem("easyMode", isEnabled.toString());
+
+    // setIsLeader(difficulty === "9");
+
     navigate(`/game/${difficulty}`);
   };
 

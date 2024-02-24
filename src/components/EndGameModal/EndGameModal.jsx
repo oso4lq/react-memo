@@ -32,9 +32,7 @@ export function EndGameModal({ isLeader, isWon, gameDurationSeconds, gameDuratio
       });
   };
 
-  // const iSleader = true;
-
-  const title = isLeader ? "You're on the leaderboard!" : isWon ? "You won!" : "You lose!";
+  const title = isWon ? (isLeader ? "You're on the leaderboard!" : "You won!") : "You lose!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
