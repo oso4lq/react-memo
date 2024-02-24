@@ -6,6 +6,7 @@ import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { ModeContext } from "../../context/ModeContext";
+// import { LeaderContext } from "../../context/LeaderContext";
 
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
@@ -24,34 +25,34 @@ function getTimerValue(startDate, endDate) {
     endDate = new Date();
   }
 
-  const diffInSecconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
-  const minutes = Math.floor(diffInSecconds / 60);
-  const seconds = diffInSecconds % 60;
+  const diffInSeconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
+  const minutes = Math.floor(diffInSeconds / 60);
+  const seconds = diffInSeconds % 60;
   return {
     minutes,
     seconds,
   };
 }
 
-export function Cards({ pairsCount = 3, previewSeconds = 5 }, isLeader) {
+export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const { isEnabled } = useContext(ModeContext);
+  // const { isLeader } = useContext(LeaderContext);
   const [cards, setCards] = useState([]);
   const [status, setStatus] = useState(STATUS_PREVIEW);
-
-  // const [isLeader, setIsLeader] = useState(false);
-
   const [gameStartDate, setGameStartDate] = useState(null);
   const [gameEndDate, setGameEndDate] = useState(null);
-
   const [timer, setTimer] = useState({
     seconds: 0,
     minutes: 0,
   });
+  const maxAttempts = isEnabled ? 3 : 1;
+  const [attempts, setAttempts] = useState(maxAttempts);
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
   }
+
   function startGame() {
     const startDate = new Date();
     setGameEndDate(null);
@@ -59,96 +60,82 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }, isLeader) {
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
   }
+
   function resetGame() {
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
-    // sets attepmts for new game
     setAttempts(isEnabled ? 3 : 1);
   }
 
-  //  Attempts
-  const maxAttempts = isEnabled ? 3 : 1;
-  const [attempts, setAttempts] = useState(maxAttempts);
-  const handleAttempts = e => {
-    e--;
-    setAttempts(e);
-    if (e <= 0) {
+  const handleAttempts = () => {
+    const updatedAttempts = attempts - 1;
+    setAttempts(updatedAttempts);
+    if (updatedAttempts <= 0) {
       finishGame(STATUS_LOST);
     }
   };
-
-  // const [cardsCounter, setCardsCounter] = useState(2);
-  // const handleCardsCounter = e => {
-  //   console.log("added 2");
-  //   e = e + 2;
-  //   setCardsCounter(e);
-  // };
 
   const openCard = clickedCard => {
     if (clickedCard.open || status !== STATUS_IN_PROGRESS) {
       return;
     }
-    //
-    // const openedCards = cards.filter(card => card.open);
-    // const cardsCounter = openedCards.length / 2 + 1;
-    // console.log("length" + openedCards.length);
-    // console.log("counter" + cardsCounter);
-    // console.log(cardsCounter * 2 - 1);
-    //
-    // if (openedCards.length <= cardsCounter * 2 - 1) {
-    //
+
+    const openCards = cards.filter(card => card.open && !card.guessed);
+
+    if (openCards.length >= 2) {
+      return;
+    }
+
     const nextCards = cards.map(card => {
-      if (card.id !== clickedCard.id) {
-        return card;
+      if (card.id === clickedCard.id || card.guessed) {
+        return {
+          ...card,
+          open: true,
+        };
       }
-      return {
-        ...card,
-        open: true,
-      };
+      return card;
     });
     setCards(nextCards);
 
-    const isPlayerWon = nextCards.every(card => card.open);
+    const openPairs = nextCards.filter(card => card.open && !card.guessed);
+    const guessedPairs = openPairs.filter(card =>
+      openPairs.some(openCard => card.id !== openCard.id && card.suit === openCard.suit && card.rank === openCard.rank),
+    );
 
-    if (isPlayerWon) {
-      finishGame(STATUS_WON);
-      return;
-    }
-    //
-    // }
-    //
-    const openCards = nextCards.filter(card => card.open);
-    // const openCards = cards.filter(card => card.open);
-
-    const openCardsWithoutPair = openCards.filter(card => {
-      const sameCards = openCards.filter(openCard => card.suit === openCard.suit && card.rank === openCard.rank);
-
-      if (sameCards.length < 2) {
-        return true;
-      }
-
-      return false;
-    });
-
-    // lose attempt if picked without pair
-    const pickedWrong = openCardsWithoutPair.length >= 2;
-    if (pickedWrong) {
-      handleAttempts(attempts);
-      // and flip over the cards if the easy mode is enabled
-      const resetCards = nextCards.map(card => {
-        // const resetCards = cards.map(card => {
-        // flip over only the wrong-picked cards
-        if (openCardsWithoutPair.some(openCard => openCard.id === card.id)) {
+    if (guessedPairs.length === 2) {
+      const updatedCards = nextCards.map(card => {
+        if (guessedPairs.some(guessedCard => card.id === guessedCard.id)) {
           return {
             ...card,
-            open: false,
+            guessed: true,
           };
         }
         return card;
       });
+
+      setCards(updatedCards);
+
+      const isPlayerWon = updatedCards.every(card => card.guessed);
+
+      if (isPlayerWon) {
+        finishGame(STATUS_WON);
+      }
+    } else if (openPairs.length === 2) {
+      handleAttempts();
+
       setTimeout(() => {
+        const resetCards = nextCards.map(card => {
+          if (!card.guessed) {
+            return {
+              ...card,
+              open: false,
+            };
+          }
+          return card;
+        });
+
         setCards(resetCards);
       }, 1000);
     }
@@ -213,7 +200,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }, isLeader) {
         </div>
         {status === STATUS_IN_PROGRESS ? (
           <div className={styles.bar}>
-            {/* ATTEMPTS */}
             {isEnabled ? <p className={styles.attempts_txt}>attempt: </p> : ""}
             {isEnabled ? (
               <p className={styles.attempts_counter}>
@@ -242,7 +228,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }, isLeader) {
       {isGameEnded ? (
         <div className={styles.modalContainer}>
           <EndGameModal
-            isLeader={isLeader} // Pass isLeader prop
+            // isLeader={isLeader}
             isWon={status === STATUS_WON}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}

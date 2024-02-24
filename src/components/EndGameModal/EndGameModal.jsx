@@ -8,11 +8,14 @@ import { Link } from "react-router-dom";
 import { addScore } from "../../api";
 import { useState } from "react";
 
-export function EndGameModal({ isLeader, isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
+export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
+  const currentDifficulty = localStorage.getItem("currentDifficulty");
+
   const [username, setUsername] = useState("");
   const handleUsername = e => {
     setUsername(e.target.value);
   };
+
   const handleScore = () => {
     if (username.trim() === "") {
       alert("Please enter your name.");
@@ -32,7 +35,7 @@ export function EndGameModal({ isLeader, isWon, gameDurationSeconds, gameDuratio
       });
   };
 
-  const title = isWon ? (isLeader ? "You're on the leaderboard!" : "You won!") : "You lose!";
+  const title = isWon ? (currentDifficulty === "9" ? "You're on the leaderboard!" : "You won!") : "You lose!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
@@ -42,7 +45,7 @@ export function EndGameModal({ isLeader, isWon, gameDurationSeconds, gameDuratio
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
       <h2 className={styles.title}>{title}</h2>
-      {isWon ? (
+      {isWon && currentDifficulty === "9" && (
         <input
           className={styles.input_user}
           type="text"
@@ -50,15 +53,11 @@ export function EndGameModal({ isLeader, isWon, gameDurationSeconds, gameDuratio
           onChange={handleUsername}
           placeholder="Enter your name"
         />
-      ) : (
-        ""
       )}
-      {isWon ? (
+      {isWon && currentDifficulty === "9" && (
         <button className={styles.buttonmode_addscore} onClick={() => handleScore()}>
           Add your score
         </button>
-      ) : (
-        ""
       )}
       <p className={styles.description}>Time spent:</p>
       <div className={styles.time}>
@@ -69,12 +68,10 @@ export function EndGameModal({ isLeader, isWon, gameDurationSeconds, gameDuratio
       <Link to="/">
         <Button>Return to main page</Button>
       </Link>
-      {isWon ? (
+      {isWon && currentDifficulty === "9" && (
         <Link className={styles.title_leaderboard} to="/leaderboard">
           View leaderboard
         </Link>
-      ) : (
-        ""
       )}
     </div>
   );
