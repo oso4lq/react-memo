@@ -305,7 +305,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
                 title="Alohomora: opens a random pair of cards."
                 disabled={isAlohomora || isXRayActive}
                 onClick={alohomora}
-                className={(styles.icon, styles.alohomora)}
+                className={styles.alohomora}
               >
                 <svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect width="68" height="68" rx="34" fill="#C2F5FF" />
@@ -359,7 +359,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               <button
                 disabled={isXRay}
                 title="X-Ray: open all closed cards and stops the timer for 5 seconds."
-                className={(styles.icon, styles.xray)}
+                className={styles.xray}
                 onClick={xRay}
               >
                 <svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -117,25 +117,6 @@
   padding: 8px;
   position: absolute;
   z-index: 1;
-  bottom: -190%; /* Position the tooltip above the element */
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.2s;
-  width: 154px;
-  height: auto;
-  font-family: "StratosSkyeng", sans-serif;
-  font-size: 20px;
-  text-align: center;
-}
-.alohomora:hover::after {
-  content: attr(title);
-  background-color: #c2f5ff;
-  color: #004980;
-  border-radius: 4px;
-  padding: 8px;
-  position: absolute;
-  z-index: 1;
   bottom: -150%; /* Position the tooltip above the element */
   left: 50%;
   transform: translateX(-50%);
@@ -172,26 +153,7 @@
   padding: 8px;
   position: absolute;
   z-index: 1;
-  bottom: -190%; /* Position the tooltip above the element */
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.2s;
-  width: 154px;
-  height: auto;
-  font-family: "StratosSkyeng", sans-serif;
-  font-size: 20px;
-  text-align: center;
-}
-.xray:hover::after {
-  content: attr(title);
-  background-color: #c2f5ff;
-  color: #004980;
-  border-radius: 4px;
-  padding: 8px;
-  position: absolute;
-  z-index: 1;
-  bottom: -190%; /* Position the tooltip above the element */
+  bottom: -150px; /* Position the tooltip above the element */
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
