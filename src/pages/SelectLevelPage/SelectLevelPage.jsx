@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./SelectLevelPage.module.css";
 import { Button } from "../../components/Button/Button";
+import { ButtonMode } from "../../components/Button/ButtonMode";
 import { useContext, useEffect, useState } from "react";
 import { ModeContext } from "../../context/ModeContext";
-import { ButtonMode } from "../../components/Button/ButtonMode";
+import styles from "./SelectLevelPage.module.css";
 
 export function SelectLevelPage() {
   const { isEnabled, setIsEnabled } = useContext(ModeContext);

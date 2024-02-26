@@ -45,23 +45,25 @@
 }
 .bar {
   display: flex;
-  gap: 16px;
+  gap: 32px;
   align-items: center;
 }
+.bar_element {
+  display: flex;
+  gap: 8px;
+}
 .attempts_txt {
-  margin-top: 8px;
   color: #fff;
   font-family: StratosSkyeng;
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: 72px;
 }
 .attempts_counter {
-  margin-top: 8px;
   color: #fff;
   font-family: StratosSkyeng;
-  font-size: 40px;
+  font-size: 36px;
   font-style: normal;
   font-weight: 400;
   line-height: 72px;
@@ -92,4 +94,122 @@
   line-height: 32px;
 
   margin-bottom: -12px;
+}
+
+.alohomora {
+  cursor: pointer;
+  background: transparent;
+  width: 68px;
+  height: 68px;
+  border-radius: 50px;
+  border: 1px;
+}
+.alohomora {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+.alohomora:hover::after {
+  content: attr(title);
+  background-color: #c2f5ff;
+  color: #004980;
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: -190%; /* Position the tooltip above the element */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  width: 154px;
+  height: auto;
+  font-family: "StratosSkyeng", sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
+.alohomora:hover::after {
+  content: attr(title);
+  background-color: #c2f5ff;
+  color: #004980;
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: -150%; /* Position the tooltip above the element */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  width: 154px;
+  height: auto;
+  font-family: "StratosSkyeng", sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
+.alohomora:hover::after {
+  opacity: 1;
+}
+
+.xray {
+  cursor: pointer;
+  background: transparent;
+  width: 68px;
+  height: 68px;
+  border-radius: 50px;
+  border: 1px;
+}
+.xray {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+.xray:hover::after {
+  content: attr(title);
+  background-color: #c2f5ff;
+  color: #004980;
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: -190%; /* Position the tooltip above the element */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  width: 154px;
+  height: auto;
+  font-family: "StratosSkyeng", sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
+.xray:hover::after {
+  content: attr(title);
+  background-color: #c2f5ff;
+  color: #004980;
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: -190%; /* Position the tooltip above the element */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  width: 154px;
+  height: auto;
+  font-family: "StratosSkyeng", sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
+.xray:hover::after {
+  opacity: 1;
+}
+
+button:hover {
+  border: 1px solid transparent;
+}
+.footer_box {
+  display: flex;
+  justify-content: space-between;
 }
