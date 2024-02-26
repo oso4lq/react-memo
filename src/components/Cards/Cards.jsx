@@ -257,6 +257,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     return () => {
       clearTimeout(timerId);
     };
+    // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [status, pairsCount, previewSeconds]);
 
   // added stopping the timer on x-ray use
