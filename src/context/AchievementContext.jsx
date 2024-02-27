@@ -7,13 +7,10 @@ export const AchievementsProvider = ({ children }) => {
 
   const addAchievement = achievementId => {
     setAchievementsList(prevList => [...prevList, achievementId]);
-    console.log("achievement added");
-    console.log("achievementId ", achievementId);
   };
 
   const resetAchievements = () => {
     setAchievementsList([]);
-    console.log("achievement reset");
   };
 
   return (
