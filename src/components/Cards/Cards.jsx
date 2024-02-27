@@ -155,6 +155,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
     setGuessedPairsCount(0);
     resetAchievements();
+    setIsXRay(false);
+    setIsAlohomora(false);
   }
 
   function resetGame() {
@@ -165,6 +167,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setAttempts(isEnabled ? 3 : 1);
     setGuessedPairsCount(0);
     resetAchievements();
+    setIsXRay(false);
+    setIsAlohomora(false);
   }
 
   // decreases attempts on player's mistake
