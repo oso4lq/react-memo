@@ -144,7 +144,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   // added setguessedpairscount to all functions below
   function finishGame(status = STATUS_LOST) {
-    console.log("finish ", achievementsList);
     setGameEndDate(new Date());
     setStatus(status);
     setGuessedPairsCount(0);

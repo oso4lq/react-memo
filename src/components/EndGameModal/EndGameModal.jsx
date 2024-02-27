@@ -17,7 +17,6 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   };
 
   const handleScore = () => {
-    console.log("handlescore ", achievementsList);
     if (username.trim() === "") {
       alert("Please enter your name.");
       console.log("username not set. using default value: 'user'");
