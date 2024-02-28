@@ -36,7 +36,7 @@ function getTimerValue(startDate, endDate) {
 
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const { isEnabled } = useContext(ModeContext);
-  const { achievementsList, addAchievement, resetAchievements } = useAchievements();
+  const { addAchievement, resetAchievements } = useAchievements();
   const [cards, setCards] = useState([]);
   const [status, setStatus] = useState(STATUS_PREVIEW);
   const [gameStartDate, setGameStartDate] = useState(null);
