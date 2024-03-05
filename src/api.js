@@ -1,4 +1,4 @@
-const API_URL = "https://wedev-api.sky.pro/api/leaderboard";
+const API_URL = "https://wedev-api.sky.pro/api/v2/leaderboard";
 
 export async function getScores() {
   try {
@@ -18,13 +18,14 @@ export async function getScores() {
   }
 }
 
-export async function addScore({ name, time }) {
+export async function addScore({ name, time, achievements }) {
   try {
     const response = await fetch(API_URL, {
       method: "POST",
       body: JSON.stringify({
         name,
         time,
+        achievements,
       }),
     });
     if (!response.ok) {

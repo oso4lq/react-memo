@@ -11,11 +11,11 @@ The project is implemented based on the [Create React App](https://github.com/fa
 
 ## Estimated time spent
 
-8 hrs + 8 hrs
+8 hrs + 8 hrs + 8 hrs = 24 hrs
 
 ## Actual time spent
 
-8 hrs + 14 hrs
+8 hrs + 14 hrs + 10 hrs = 32 hrs
 
 ## New features
 
@@ -33,8 +33,23 @@ The project is implemented based on the [Create React App](https://github.com/fa
 - player sees score interactions only on 3d difficulty.
 
 3. Various fixes.
+
 - Player can't pick more than 2 cards at once,
 - If player picks two non-matching cards, only non-matching cards flip over, and one attempt removes. Matching cards remain open.
+
+4. Added "superpowers". The player can use them once a game.
+
+- Alohomora: opens a random pair of cards.
+- X-Ray: open all closed cards and stops the timer for 5 seconds.
+
+* fixes: Alohomora disables when using X-Ray to prevent bugs.
+
+5. Added achievements. Sends/loads data to/from API. Achievements display on the leaderboard.
+
+- Played on hard mode.
+- No superpowers used.
+
+* fixes: renders all data from API including empty and missing arrays with achievements IDs.
 
 ### How to develop
 

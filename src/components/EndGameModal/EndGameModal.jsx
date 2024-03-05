@@ -1,15 +1,15 @@
-import styles from "./EndGameModal.module.css";
-
 import { Button } from "../Button/Button";
-
-import deadImageUrl from "./images/dead.png";
-import celebrationImageUrl from "./images/celebration.png";
 import { Link } from "react-router-dom";
 import { addScore } from "../../api";
 import { useState } from "react";
+import { useAchievements } from "../../context/AchievementContext";
+import deadImageUrl from "./images/dead.png";
+import celebrationImageUrl from "./images/celebration.png";
+import styles from "./EndGameModal.module.css";
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
   const currentDifficulty = localStorage.getItem("currentDifficulty");
+  const { achievementsList } = useAchievements();
 
   const [username, setUsername] = useState("");
   const handleUsername = e => {
@@ -24,7 +24,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       return;
     }
     const totalTimeInSeconds = gameDurationMinutes * 60 + gameDurationSeconds;
-    addScore({ name: username, time: totalTimeInSeconds })
+    addScore({ name: username, time: totalTimeInSeconds, achievements: achievementsList })
       .then(() => {
         alert("Score saved.");
         onClick();
